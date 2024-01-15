@@ -1,0 +1,23 @@
+{{define "track"}}
+<html>
+
+<head>
+    <title>Informations sur la musique de SDM</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <h1>Informations sur la musique de SDM</h1>
+    <div class="julsang">
+        <div class="article">
+            <h3>{{ .Name }}</h3>
+            <p>Album: {{ .Album.Name }}</p>
+            <p>Artiste: {{ range .Artists }}{{ .Name }}, {{ end }}</p>
+            <p>Date de sortie: {{ .ReleaseDate }}</p>
+            <a href="{{ .ExternalURLs.SpotifyURL }}" target="_blank">Écouter sur Spotify</a>
+        </div>
+    </div>
+</body>
+
+</html>
+{{end}}

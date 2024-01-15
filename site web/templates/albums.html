@@ -1,0 +1,26 @@
+{{define "album"}}
+<html>
+
+<head>
+    <title>Albums de Jul</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="back">
+        <a href="index.html"><button>Back</button></a>
+    </div>
+    <h1>Albums de Jul</h1>
+    {{ range .Items }}
+    <div class="julsang">
+        <div class="article">
+            <h3>{{ .Name }}</h3>
+            <p>Date de sortie: {{ .ReleaseDate }}</p>
+            <p>Nombre de musiques: {{ .Total_tracks }}</p>
+        </div>
+    </div>
+    {{ end }}
+</body>
+
+</html>
+{{end}}

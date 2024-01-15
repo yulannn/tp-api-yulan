@@ -75,83 +75,60 @@ func appelAPI(token string, endpoint string) ([]byte, error) {
 	return body, nil
 }
 
-func getAlbums(w http.ResponseWriter, r *http.Request) {
-	token := "BQAP_26A1KQI1pYQE6PfZ4C7K_HS2mw26vJac8KR6yljSta2-IANOvRva5a388Ijysm2ceHXj841PTDm1dMrUP5rfRp4krGSuYbHbwwNydWf-xeRHT4"
+func getAlbums(w http.ResponseWriter, r *http.Request) ResponseAlbums{
+	token := "BQAbDrgEFPF7ZEmJtwkMOkn8Y5Jo-JHssOrzQFJCskLPT71-LdYNCKjY6jTdzn1kt4ktS2L1RZGhfz6l2pCkA7XBkyDQ-maazxJ2RBwMVXiHwyrYBSw"
 
 	albumEndpoint := "/artists/3IW7ScrzXmPvZhB27hmfgy/albums"
-	albumBody, err := appelAPI(token, albumEndpoint)
-	if err != nil {
-		fmt.Println("Erreur lors de la requête des albums:", err)
-		http.Error(w, "Erreur lors de la requête des albums", http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Printf("Response JSON: %s\n", albumBody)
+	albumBody, _ := appelAPI(token, albumEndpoint)
 
 	var response ResponseAlbums
-	err = json.Unmarshal(albumBody, &response)
-	if err != nil {
-		fmt.Println("Erreur lors de la désérialisation JSON des albums:", err)
-		http.Error(w, "Erreur lors de la désérialisation JSON des albums", http.StatusInternalServerError)
-		return
-	}
+	json.Unmarshal(albumBody, &response)
 
-	for _, album := range response.Items {
-		fmt.Fprintf(w, "Nom de l'album: %s\n", album.Name)
-		fmt.Fprintf(w, "Image de couverture: %s\n", album.Images[0].URL)
-		fmt.Fprintf(w, "Date de sortie: %s\n", album.ReleaseDate)
-		fmt.Fprintf(w, "Nombre de titre: %d\n", album.Total_tracks)
-		fmt.Fprintln(w, "------------------------")
-	}
+	return response
 }
 
-func getTrack(w http.ResponseWriter, r *http.Request) {
-	token := "BQAP_26A1KQI1pYQE6PfZ4C7K_HS2mw26vJac8KR6yljSta2-IANOvRva5a388Ijysm2ceHXj841PTDm1dMrUP5rfRp4krGSuYbHbwwNydWf-xeRHT4"
+func getTrack(w http.ResponseWriter, r *http.Request) Track {
+	token := "BQAbDrgEFPF7ZEmJtwkMOkn8Y5Jo-JHssOrzQFJCskLPT71-LdYNCKjY6jTdzn1kt4ktS2L1RZGhfz6l2pCkA7XBkyDQ-maazxJ2RBwMVXiHwyrYBSw"
 
 	trackEndpoint := "/tracks/0EzNyXyU7gHzj2TN8qYThj"
-	trackBody, err := appelAPI(token, trackEndpoint)
-	if err != nil {
-		fmt.Println("Erreur lors de la requête de la piste:", err)
-		http.Error(w, "Erreur lors de la requête de la piste", http.StatusInternalServerError)
-		return
-	}
+	trackBody, _ := appelAPI(token, trackEndpoint)
 
 	var trackInfo Track
-	err = json.Unmarshal(trackBody, &trackInfo)
-	if err != nil {
-		fmt.Println("Erreur lors de la désérialisation JSON de la piste:", err)
-		http.Error(w, "Erreur lors de la désérialisation JSON de la piste", http.StatusInternalServerError)
-		return
-	}
+	json.Unmarshal(trackBody, &trackInfo)
 
-	fmt.Fprintf(w, "Nom de la piste: %s\n", trackInfo.Name)
-	fmt.Fprintf(w, "Nom de l'album: %s\n", trackInfo.Album.Name)
-	fmt.Fprintf(w, "Artiste: %s\n", trackInfo.Artists[0].Name)
-	fmt.Fprintf(w, "Date de sortie: %s\n", trackInfo.ReleaseDate)
-	fmt.Fprintf(w, "URL Spotify: %s\n", trackInfo.ExternalURLs.Spotify)
+	return trackInfo
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("index.html")
-	if err != nil {
-		http.Error(w, "Erreur lors de l'analyse du modèle HTML", http.StatusInternalServerError)
-		return
-	}
-
-	
-
-	err = tmpl.Execute(w, nil)
-	if err != nil {
-		http.Error(w, "Erreur lors du rendu du modèle HTML", http.StatusInternalServerError)
-		return
-	}
+	temp, err := template.ParseGlob("./templates/*.html")
+    if err != nil {
+        http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+        fmt.Println("Error parsing templates:", err)
+        return
+    }
+	err = temp.ExecuteTemplate(w, "index", nil)
+    if err != nil {
+        http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+        fmt.Println("Error executing template:", err)
+        return
+    }
 }
 
 func main() {
+	temp, _ := template.ParseGlob("templates/*.html")
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/album/jul", getAlbums)
-	http.HandleFunc("/track/sdm", getTrack)
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+
+	http.HandleFunc("/album/jul", func(w http.ResponseWriter, r *http.Request){
+		albums := getAlbums(w, r)
+		temp.ExecuteTemplate(w, "album", albums)
+	})
+
+	http.HandleFunc("/track/sdm", func(w http.ResponseWriter, r *http.Request){
+		track := getTrack(w, r)
+		fmt.Println(track)
+		temp.ExecuteTemplate(w, "track", track)
+	})
 
 	http.ListenAndServe(":8080", nil)
 }

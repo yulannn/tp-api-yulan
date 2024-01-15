@@ -4,12 +4,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: black;
 }
 
 body {
     background-color: black;
     font-family: "Poppins", sans-serif;
+    height: 100vh;
 }
 
 h1 {
@@ -17,6 +17,7 @@ h1 {
     text-align: center;
     margin-top: 2rem;
     color: white;
+    padding: 2rem;
 }
 
 .content {
@@ -31,23 +32,66 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 8rem;
-    margin-top: 18rem;
+    margin-top: 30rem;
 }
 
 .container button {
     width: 12rem;
     height: 4rem;
-    background-color: red;
-    color: black;
-    border: 2px solid white;
+    background-color: violet;
+    color: aqua;
+    border: 1px solid white;
+    box-shadow: 1px 1px 5px 1px aqua;
     border-radius: 25px;
     cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 .julsang {
+    display: flex;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 99vw;
     color: violet;
+}
+
+.article {
+    display: flex;
+    width: 45%;
+    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 1rem;
+    background-color: #2b2d30;
+}
+
+.article:hover {
+    transform: scale(1.05);
 }
 
 h3 {
     color: aqua;
+}
+
+.back button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: violet;
+    color: aqua;
+    border: 1px solid white;
+    box-shadow: 1px 1px 5px 1px aqua;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.back button:hover {
+    background-color: aqua;
+    color: violet;
 }
