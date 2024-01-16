@@ -76,7 +76,7 @@ func appelAPI(token string, endpoint string) ([]byte, error) {
 }
 
 func getAlbums(w http.ResponseWriter, r *http.Request) ResponseAlbums{
-	token := "BQAbDrgEFPF7ZEmJtwkMOkn8Y5Jo-JHssOrzQFJCskLPT71-LdYNCKjY6jTdzn1kt4ktS2L1RZGhfz6l2pCkA7XBkyDQ-maazxJ2RBwMVXiHwyrYBSw"
+	token := "BQAuaxo7yIujbkuz3EvWPRClElogwUB7aIaiHUb1TdZjNH9NWSNKkFW_q479vaASlzCMY18_Lux0jOIHOx8aK5CyD9YDvz5HNuDw-FdCn6akUMppgak"
 
 	albumEndpoint := "/artists/3IW7ScrzXmPvZhB27hmfgy/albums"
 	albumBody, _ := appelAPI(token, albumEndpoint)
@@ -88,7 +88,7 @@ func getAlbums(w http.ResponseWriter, r *http.Request) ResponseAlbums{
 }
 
 func getTrack(w http.ResponseWriter, r *http.Request) Track {
-	token := "BQAbDrgEFPF7ZEmJtwkMOkn8Y5Jo-JHssOrzQFJCskLPT71-LdYNCKjY6jTdzn1kt4ktS2L1RZGhfz6l2pCkA7XBkyDQ-maazxJ2RBwMVXiHwyrYBSw"
+	token := "BQAuaxo7yIujbkuz3EvWPRClElogwUB7aIaiHUb1TdZjNH9NWSNKkFW_q479vaASlzCMY18_Lux0jOIHOx8aK5CyD9YDvz5HNuDw-FdCn6akUMppgak"
 
 	trackEndpoint := "/tracks/0EzNyXyU7gHzj2TN8qYThj"
 	trackBody, _ := appelAPI(token, trackEndpoint)
