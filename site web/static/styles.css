@@ -60,12 +60,15 @@ h1 {
 
 .article {
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 45%;
     gap: 1rem;
     padding: 1.2rem;
     border-radius: 1rem;
     background-color: #2b2d30;
 }
+
 
 .article:hover {
     transform: scale(1.05);
@@ -74,6 +77,7 @@ h1 {
 h3 {
     color: aqua;
 }
+
 
 .back button {
     position: absolute;

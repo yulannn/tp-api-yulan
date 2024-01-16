@@ -14,9 +14,18 @@
     {{ range .Items }}
     <div class="julsang">
         <div class="article">
-            <h3>{{ .Name }}</h3>
-            <p>Date de sortie: {{ .ReleaseDate }}</p>
-            <p>Nombre de musiques: {{ .Total_tracks }}</p>
+            {{ range $index, $image := .Images }}
+            {{ if eq $index 1 }}
+            <div>
+                <img src="{{ $image.URL }}" alt="Image">
+            </div>
+            {{ end }}
+            {{ end }}
+            <div class="info">
+                <h3>{{ .Name }}</h3>
+                <p>Date de sortie: {{ .ReleaseDate }}</p>
+                <p>Nombre de musiques: {{ .Total_tracks }}</p>
+            </div>
         </div>
     </div>
     {{ end }}
